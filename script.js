@@ -4,8 +4,13 @@ const player2 = 'O'
 let winner = 'X';
 
 function Block({classProp}){
+
+  function checkBlock(e) {
+    e.target.textContent = 'X' // let's cheat again :P
+  }
+
   return (
-    <div className={classProp}></div>
+    <div className={classProp} onClick={checkBlock}></div>
   )
 }
 
