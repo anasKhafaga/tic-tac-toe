@@ -76,15 +76,15 @@ class Board extends React.Component {
     super()
   }
 
-  toggleColor(e) {
-    e.currentTarget.classList.toggle('bk-color-3');
+  toggleColor(classParam, e) {
+    e.currentTarget.classList.toggle(classParam);
 
     console.log(this);
   }
 
   render() {
     return(
-      <div className="bk-color-2 w-100 h-75 grid board row g-0" id="board-root" onClick={this.toggleColor}>
+      <div className="bk-color-2 w-100 h-75 grid board row g-0" id="board-root" onClick={this.toggleColor.bind(this, 'bk-color-3')}>
         <Row1 classProp="row g-0" />
         <Row2 classProp="row g-0" />
         <Row3 classProp="row g-0" />
