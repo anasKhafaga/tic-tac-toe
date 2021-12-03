@@ -94,12 +94,12 @@ class Board extends React.Component {
   }
 }
 
-function ResultBlock({player}) {
+function ResultBlock({player, score, click}) {
   return (
     <div class="row g-0">
         <div class="col-4">{player}</div>
-        <div class="col-4"><img src="heart.png" alt="" /></div>
-        <div class="col-4">{0}</div>
+        <div class="col-4"><img src="heart.png" alt="" onClick={click} /></div>
+        <div class="col-4">{score}</div>
     </div>
   )
 }
@@ -107,11 +107,15 @@ function ResultBlock({player}) {
 function Result() {
 
 
+  const [xScore, setXScore] = React.useState(0);
+  const [oScore, setOScore] = React.useState(0)
+  const [nilScore, setNilScore] = React.useState(0)
+
   return (
     <div class="w-100 h-75 grid results row g-0">
-      <ResultBlock player='X' />
-      <ResultBlock player='=' />
-      <ResultBlock player='O' />
+      <ResultBlock player='X' score={xScore} click={() => setXScore(xScore + 1)} />
+      <ResultBlock player='=' score={nilScore} click={() => setNilScore(nilScore + 1)} />
+      <ResultBlock player='O' score={oScore} click={() => setOScore(oScore + 1)} />
     </div>
   )
 }
