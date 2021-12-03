@@ -1,4 +1,5 @@
 const boardContainerRoot = document.querySelector('#board-container-root');
+const resultContainerRoot = document.querySelector('#results')
 const player1 = 'X'
 const player2 = 'O'
 let winner = 'X';
@@ -93,4 +94,27 @@ class Board extends React.Component {
   }
 }
 
+function ResultBlock({player}) {
+  return (
+    <div class="row g-0">
+        <div class="col-4">{player}</div>
+        <div class="col-4"><img src="heart.png" alt="" /></div>
+        <div class="col-4">{0}</div>
+    </div>
+  )
+}
+
+function Result() {
+
+
+  return (
+    <div class="w-100 h-75 grid results row g-0">
+      <ResultBlock player='X' />
+      <ResultBlock player='=' />
+      <ResultBlock player='O' />
+    </div>
+  )
+}
+
 ReactDOM.render(<Board />, boardContainerRoot)
+ReactDOM.render(<Result />, resultContainerRoot)
