@@ -5,12 +5,12 @@ let winner = 'X';
 
 function Block({classProp}){
 
-  function checkBlock(e) {
-    e.target.textContent = 'X' // let's cheat again :P
+  function checkBlock(e, player) {
+    e.target.textContent = player
   }
 
   return (
-    <div className={classProp} onClick={checkBlock}></div>
+    <div className={classProp} onClick={(e) => checkBlock(e, 'X')}></div>
   )
 }
 
@@ -76,9 +76,15 @@ class Board extends React.Component {
     super()
   }
 
+  toggleColor(e) {
+    e.currentTarget.classList.toggle('bk-color-3');
+
+    console.log(this);
+  }
+
   render() {
     return(
-      <div className="bk-color-2 w-100 h-75 grid board row g-0" id="board-root">
+      <div className="bk-color-2 w-100 h-75 grid board row g-0" id="board-root" onClick={this.toggleColor}>
         <Row1 classProp="row g-0" />
         <Row2 classProp="row g-0" />
         <Row3 classProp="row g-0" />
