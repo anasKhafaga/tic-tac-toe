@@ -59,11 +59,14 @@ class Board extends React.Component {
         this.props.oWins()
       }
 
+      return this.props.announceWinner();
+
     }
 
     // check if game is nil
     if(tl && tm && tr && ml && mm && mr && bl && bm && br){
       this.props.nil()
+      return this.props.setNilGame();
     }
 
     this.setState((state) => {
@@ -78,34 +81,44 @@ class Board extends React.Component {
 
   render() {
     return(
-      <div class="col-8 h-100 g-0 row align-items-center" id="board-container-root">
+      <div className="col-8 h-100 g-0 row align-items-center" id="board-container-root">
         <div className="bk-color-2 w-100 h-75 grid board row g-0" id="board-root" onClick={this.toggleColor.bind(this, 'bk-color-3')}>
-          <div className="row g-0">
-              <Block classProp="col-4 tl" click={this.checkBlock.bind(this)} />
-              <Block classProp="col-4 tm" click={this.checkBlock.bind(this)} />
-              <Block classProp="col-4 tr" click={this.checkBlock.bind(this)} />
-          </div>
-          <div className="row g-0">
-              <Block classProp="col-4 ml" click={this.checkBlock.bind(this)} />
-              <Block classProp="col-4 mm" click={this.checkBlock.bind(this)} />
-              <Block classProp="col-4 mr" click={this.checkBlock.bind(this)} />
-          </div>
-          <div className="row g-0">
-              <Block classProp="col-4 bl" click={this.checkBlock.bind(this)} />
-              <Block classProp="col-4 bm" click={this.checkBlock.bind(this)} />
-              <Block classProp="col-4 br" click={this.checkBlock.bind(this)} />
-          </div>
+        {this.props.nilGame? (
+          <h3>Nil</h3>
+        ) : (
+          this.props.gameOver? (
+            <h3>{`${this.state.currentPlayer} wins`}</h3>
+          ) : (
+            <React.Fragment>
+              <div className="row g-0">
+                  <Block classProp="col-4 tl" click={this.checkBlock.bind(this)} />
+                  <Block classProp="col-4 tm" click={this.checkBlock.bind(this)} />
+                  <Block classProp="col-4 tr" click={this.checkBlock.bind(this)} />
+              </div>
+              <div className="row g-0">
+                  <Block classProp="col-4 ml" click={this.checkBlock.bind(this)} />
+                  <Block classProp="col-4 mm" click={this.checkBlock.bind(this)} />
+                  <Block classProp="col-4 mr" click={this.checkBlock.bind(this)} />
+              </div>
+              <div className="row g-0">
+                  <Block classProp="col-4 bl" click={this.checkBlock.bind(this)} />
+                  <Block classProp="col-4 bm" click={this.checkBlock.bind(this)} />
+                  <Block classProp="col-4 br" click={this.checkBlock.bind(this)} />
+              </div>
+            </React.Fragment>
+          )
+        )}
         </div>
       </div>
     )
   }
 }
 
-function ResultBlock({player, score, click}) {
+function ResultBlock({player, score}) {
   return (
     <div className="row g-0">
         <div className="col-4">{player}</div>
-        <div className="col-4"><img src="heart.png" alt="" onClick={click} /></div>
+        <div className="col-4"><img src="heart.png" alt="" /></div>
         <div className="col-4">{score}</div>
     </div>
   )
@@ -114,7 +127,7 @@ function ResultBlock({player, score, click}) {
 function Result({xScore, oScore, nilScore}) {
 
   return (
-    <div class="col-4 h-100 g-0 row align-items-center" id="results">
+    <div className="col-4 h-100 g-0 row align-items-center" id="results">
       <div className="w-100 h-75 grid results row g-0">
         <ResultBlock player='X' score={xScore} />
         <ResultBlock player='=' score={nilScore} />
@@ -130,10 +143,13 @@ function Game() {
   const [oScore, setOScore] = React.useState(0)
   const [nilScore, setNilScore] = React.useState(0)
 
+  const [gameOver, setGameOver] = React.useState(false)
+  const [nilGame, setNilGame] = React.useState(false)
+
   return (
     <React.Fragment>
       <Result xScore={xScore} oScore={oScore} nilScore={nilScore} />
-      <Board xWins={() => setXScore(xScore + 1)} oWins={() => setNilScore(nilScore + 1)} nil={() => setOScore(oScore + 1)} />
+      <Board xWins={() => setXScore(xScore + 1)} nil={() => setNilScore(nilScore + 1)} oWins={() => setOScore(oScore + 1)} gameOver={gameOver} nilGame={nilGame} announceWinner={() => setGameOver(true)} setNilGame={() => {setGameOver(true); setNilGame(true)}} />
     </React.Fragment>
   )
 }
