@@ -5,7 +5,7 @@ const player2 = 'O'
 function Block({classProp, click}){
 
   return (
-    <div className={classProp} onClick={click}></div>
+    <li className={classProp} onClick={click}></li>
   )
 }
 
@@ -16,7 +16,7 @@ class Board extends React.Component {
     // define a state
     this.state = {
       currentPlayer: 'X',
-      boardMap: ['tl', 'tm', 'tr', 'ml', 'mm', 'mr', 'bl', 'bm', 'br']
+      boardMap: [['tl', 'tm', 'tr'], ['ml', 'mm', 'mr'], ['bl', 'bm', 'br']]
     }
   }
 
@@ -38,8 +38,10 @@ class Board extends React.Component {
 
 
     // extract all values
-    const [tl, tm, tr, ml, mm, mr, bl, bm, br] = this.state.boardMap.map(blk => {
-      return document.querySelector(`.${blk}`).textContent
+    const [[tl, tm, tr], [ml, mm, mr], [bl, bm, br]] = this.state.boardMap.map(row => {
+      return row.map(blk => {
+        return document.querySelector(`.${blk}`).textContent
+      })
     })
     // check who wins
     if (
@@ -90,21 +92,15 @@ class Board extends React.Component {
             <h3>{`${this.state.currentPlayer} wins`}</h3>
           ) : (
             <React.Fragment>
-              <div className="row g-0">
-                  <Block classProp="col-4 tl" click={this.checkBlock.bind(this)} />
-                  <Block classProp="col-4 tm" click={this.checkBlock.bind(this)} />
-                  <Block classProp="col-4 tr" click={this.checkBlock.bind(this)} />
-              </div>
-              <div className="row g-0">
-                  <Block classProp="col-4 ml" click={this.checkBlock.bind(this)} />
-                  <Block classProp="col-4 mm" click={this.checkBlock.bind(this)} />
-                  <Block classProp="col-4 mr" click={this.checkBlock.bind(this)} />
-              </div>
-              <div className="row g-0">
-                  <Block classProp="col-4 bl" click={this.checkBlock.bind(this)} />
-                  <Block classProp="col-4 bm" click={this.checkBlock.bind(this)} />
-                  <Block classProp="col-4 br" click={this.checkBlock.bind(this)} />
-              </div>
+              {this.state.boardMap.map(row => {
+                return (
+                  <ul className="row g-0">
+                    {row.map(blk => {
+                      return <Block classProp={`col-4 ${blk}`} click={this.checkBlock.bind(this)} />
+                    })}
+                  </ul>
+                )
+              })}
             </React.Fragment>
           )
         )}
