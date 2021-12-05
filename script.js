@@ -1,6 +1,4 @@
-const gameRoot = document.querySelector('#game')
-const player1 = 'X'
-const player2 = 'O'
+const gameRoot = document.querySelector('#root')
 
 function Block({classProp, click}){
 
@@ -292,22 +290,61 @@ class ModalClass extends React.Component {
   }
 }
 
-function Game() {
+function Game({gameOver, nilGame, announceWinner, setNilGame}) {
 
   const [xScore, setXScore] = React.useState(0);
   const [oScore, setOScore] = React.useState(0)
   const [nilScore, setNilScore] = React.useState(0)
 
-  const [gameOver, setGameOver] = React.useState(false)
-  const [nilGame, setNilGame] = React.useState(false)
-
   return (
     <React.Fragment>
       <Result xScore={xScore} oScore={oScore} nilScore={nilScore} />
-      <Board xWins={() => setXScore(xScore + 1)} nil={() => setNilScore(nilScore + 1)} oWins={() => setOScore(oScore + 1)} gameOver={gameOver} nilGame={nilGame} announceWinner={() => setGameOver(true)} setNilGame={() => {setGameOver(true); setNilGame(true)}} />
+      <Board xWins={() => setXScore(xScore + 1)} nil={() => setNilScore(nilScore + 1)} oWins={() => setOScore(oScore + 1)} gameOver={gameOver} nilGame={nilGame} announceWinner={announceWinner} setNilGame={setNilGame} />
       <ModalClass />
     </React.Fragment>
   )
 }
 
-ReactDOM.render(<Game />, gameRoot)
+function App() {
+
+  const [gameOver, setGameOver] = React.useState(false)
+  const [nilGame, setNilGame] = React.useState(false)
+
+  return (
+    <div className="container-float">
+        <header style={{height: "7vh"}} className="row g-0 px-5 py-2 bk-color-2">
+            <h2 className="row align-items-center col-7 g-0">Tic Tac Toe Game</h2>
+            <button type="button" className="btn bk-color-1 col-2 g-0 h-100 row align-items-center" data-toggle="modal" data-target="#form">
+              Sign up
+            </button>
+            <div className="row col-3 g-0 justify-content-end align-items-center h-100">
+                <div className="bk-color-1 restart-ico clickable">
+                    <img src="restart.png" alt="" onClick={() => {setGameOver(false); setNilGame(false)}} />
+                </div>
+            </div>
+        </header>
+        <div className="row w-100 g-0 col-rev vh-93">
+            <aside className="col-md-3 px-5 py-5 bk-color-1 g-0">
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title">Tic Tac Toe</h5>
+                        <h6 className="card-subtitle mb-2 text-muted">Defintion by wikipedia</h6>
+                        <p className="card-text fs-6" style={{textAlign: "justify"}}><small>Tic-tac-toe (American English), noughts and crosses (Commonwealth English), or Xs and Os (Irish English) is a paper-and-pencil game for two players who take turns marking the spaces in a three-by-three grid with X or O. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner. It is a solved game, with a forced draw assuming best play from both players.</small>
+                        </p>
+                        <p className="text-end">
+                            <small>
+                                <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" className="card-link">LEARN MORE</a>
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </aside>
+            <main className="col-md-9 g-0 row h-100 p-5" id="game">
+                <Game gameOver={gameOver} nilGame={nilGame} announceWinner={() => setGameOver(true)} setNilGame={() => {setGameOver(true); setNilGame(true)}} />
+            </main>
+        </div>
+    </div>
+  )
+}
+
+ReactDOM.render(<App />, root)
