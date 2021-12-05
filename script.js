@@ -10,12 +10,13 @@ function Block({classProp, click}){
 }
 
 class Board extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     // define a state
     this.state = {
-      currentPlayer: 'X'
+      currentPlayer: 'X',
+      boardMap: ['tl', 'tm', 'tr', 'ml', 'mm', 'mr', 'bl', 'bm', 'br']
     }
   }
 
@@ -35,7 +36,36 @@ class Board extends React.Component {
     // update the block if not
     e.target.textContent = this.state.currentPlayer
 
-    // update the game state to next player
+
+    // extract all values
+    const [tl, tm, tr, ml, mm, mr, bl, bm, br] = this.state.boardMap.map(blk => {
+      return document.querySelector(`.${blk}`).textContent
+    })
+    // check who wins
+    if (
+      (tl == tm && tm == tr && tl != '') ||
+      (ml == mm && mm == mr && ml != '') ||
+      (bl == bm && bm == br && bl != '') ||
+      (tl == ml && ml == bl && tl != '') ||
+      (tm == mm && mm == bm && tm != '') ||
+      (tr == mr && mr == br && tr != '') ||
+      (tl == mm && mm == br && tl != '') ||
+      (tr == mm && mm == bl && tr != '')
+    ){
+
+      if(this.state.currentPlayer == 'X'){
+        this.props.xWins()
+      }else {
+        this.props.oWins()
+      }
+
+    }
+
+    // check if game is nil
+    if(tl && tm && tr && ml && mm && mr && bl && bm && br){
+      this.props.nil()
+    }
+
     this.setState((state) => {
       if(state.currentPlayer == 'X'){
         return {currentPlayer: 'O'}
