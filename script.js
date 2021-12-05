@@ -217,6 +217,81 @@ function Modal() {
   )
 }
 
+class ModalClass extends React.Component {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      username: '',
+      password: '',
+      bio: '',
+      gender: '',
+      avatar: ''
+    }
+  }
+
+  submitHandler(e) {
+    console.log(this.state);
+    e.preventDefault()
+
+  }
+
+  changeHandler(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  render() {
+    return(
+      <div className="modal fade" id="form" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog" role="document">
+          <form action="#" onSubmit={this.submitHandler.bind(this)}>
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">Create A User</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                  <div className="form-group">
+                    <label htmlFor="username">Username</label>
+                    <input type="text" name="username" onChange={this.changeHandler.bind(this)} className="form-control" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input type="password" name="password" onChange={this.changeHandler.bind(this)} className="form-control" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="bio">Bio</label>
+                    <textarea type="text" name="bio" onChange={this.changeHandler.bind(this)} className="form-control"></textarea>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="gender">Gender</label>
+                    <select name="gender" id="gender" onChange={this.changeHandler.bind(this)} className="form-control">
+                      <option value="">Please, Select</option>
+                      <option value="M">Male</option>
+                      <option value="F">Female</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="avatar">Avatar</label>
+                    <input type="file" name="avatar" onChange={this.changeHandler.bind(this)} className="form-control-file" />
+                  </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" className="btn btn-primary">Signup</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
+  }
+}
+
 function Game() {
 
   const [xScore, setXScore] = React.useState(0);
@@ -230,7 +305,7 @@ function Game() {
     <React.Fragment>
       <Result xScore={xScore} oScore={oScore} nilScore={nilScore} />
       <Board xWins={() => setXScore(xScore + 1)} nil={() => setNilScore(nilScore + 1)} oWins={() => setOScore(oScore + 1)} gameOver={gameOver} nilGame={nilGame} announceWinner={() => setGameOver(true)} setNilGame={() => {setGameOver(true); setNilGame(true)}} />
-      <Modal />
+      <ModalClass />
     </React.Fragment>
   )
 }
