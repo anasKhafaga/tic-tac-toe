@@ -92,11 +92,11 @@ class Board extends React.Component {
             <h3>{`${this.state.currentPlayer} wins`}</h3>
           ) : (
             <React.Fragment>
-              {this.state.boardMap.map(row => {
+              {this.state.boardMap.map((row, rowIdx) => {
                 return (
-                  <ul className="row g-0">
-                    {row.map(blk => {
-                      return <Block classProp={`col-4 ${blk}`} click={this.checkBlock.bind(this)} />
+                  <ul className="row g-0" key={rowIdx}>
+                    {row.map((blk, blkIdx) => {
+                      return <Block key={blkIdx} classProp={`col-4 ${blk}`} click={this.checkBlock.bind(this)} />
                     })}
                   </ul>
                 )
