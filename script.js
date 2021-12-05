@@ -1,5 +1,4 @@
-const boardContainerRoot = document.querySelector('#board-container-root');
-const resultContainerRoot = document.querySelector('#results')
+const gameRoot = document.querySelector('#game')
 const player1 = 'X'
 const player2 = 'O'
 
@@ -49,21 +48,23 @@ class Board extends React.Component {
 
   render() {
     return(
-      <div className="bk-color-2 w-100 h-75 grid board row g-0" id="board-root" onClick={this.toggleColor.bind(this, 'bk-color-3')}>
-        <div className="row g-0">
-            <Block classProp="col-4 tl" click={this.checkBlock.bind(this)} />
-            <Block classProp="col-4 tm" click={this.checkBlock.bind(this)} />
-            <Block classProp="col-4 tr" click={this.checkBlock.bind(this)} />
-        </div>
-        <div className="row g-0">
-            <Block classProp="col-4 ml" click={this.checkBlock.bind(this)} />
-            <Block classProp="col-4 mm" click={this.checkBlock.bind(this)} />
-            <Block classProp="col-4 mr" click={this.checkBlock.bind(this)} />
-        </div>
-        <div className="row g-0">
-            <Block classProp="col-4 bl" click={this.checkBlock.bind(this)} />
-            <Block classProp="col-4 bm" click={this.checkBlock.bind(this)} />
-            <Block classProp="col-4 br" click={this.checkBlock.bind(this)} />
+      <div class="col-8 h-100 g-0 row align-items-center" id="board-container-root">
+        <div className="bk-color-2 w-100 h-75 grid board row g-0" id="board-root" onClick={this.toggleColor.bind(this, 'bk-color-3')}>
+          <div className="row g-0">
+              <Block classProp="col-4 tl" click={this.checkBlock.bind(this)} />
+              <Block classProp="col-4 tm" click={this.checkBlock.bind(this)} />
+              <Block classProp="col-4 tr" click={this.checkBlock.bind(this)} />
+          </div>
+          <div className="row g-0">
+              <Block classProp="col-4 ml" click={this.checkBlock.bind(this)} />
+              <Block classProp="col-4 mm" click={this.checkBlock.bind(this)} />
+              <Block classProp="col-4 mr" click={this.checkBlock.bind(this)} />
+          </div>
+          <div className="row g-0">
+              <Block classProp="col-4 bl" click={this.checkBlock.bind(this)} />
+              <Block classProp="col-4 bm" click={this.checkBlock.bind(this)} />
+              <Block classProp="col-4 br" click={this.checkBlock.bind(this)} />
+          </div>
         </div>
       </div>
     )
@@ -80,21 +81,31 @@ function ResultBlock({player, score, click}) {
   )
 }
 
-function Result() {
+function Result({xScore, oScore, nilScore}) {
 
+  return (
+    <div class="col-4 h-100 g-0 row align-items-center" id="results">
+      <div className="w-100 h-75 grid results row g-0">
+        <ResultBlock player='X' score={xScore} />
+        <ResultBlock player='=' score={nilScore} />
+        <ResultBlock player='O' score={oScore} />
+      </div>
+    </div>
+  )
+}
+
+function Game() {
 
   const [xScore, setXScore] = React.useState(0);
   const [oScore, setOScore] = React.useState(0)
   const [nilScore, setNilScore] = React.useState(0)
 
   return (
-    <div className="w-100 h-75 grid results row g-0">
-      <ResultBlock player='X' score={xScore} click={() => setXScore(xScore + 1)} />
-      <ResultBlock player='=' score={nilScore} click={() => setNilScore(nilScore + 1)} />
-      <ResultBlock player='O' score={oScore} click={() => setOScore(oScore + 1)} />
-    </div>
+    <React.Fragment>
+      <Result xScore={xScore} oScore={oScore} nilScore={nilScore} />
+      <Board xWins={() => setXScore(xScore + 1)} oWins={() => setNilScore(nilScore + 1)} nil={() => setOScore(oScore + 1)} />
+    </React.Fragment>
   )
 }
 
-ReactDOM.render(<Board />, boardContainerRoot)
-ReactDOM.render(<Result />, resultContainerRoot)
+ReactDOM.render(<Game />, gameRoot)
