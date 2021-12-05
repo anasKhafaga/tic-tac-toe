@@ -134,10 +134,45 @@ function Result({xScore, oScore, nilScore}) {
 }
 
 function Modal() {
+
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [bio, setBio] = React.useState('');
+  const [gender, setGender] = React.useState('');
+  const [avatar, setAvatar] = React.useState('');
+
+  function changeHandler(e) {
+    switch (e.target.name) {
+      case 'username':
+        setUsername(e.target.value)
+        break;
+      case 'password':
+        setPassword(e.target.value)
+        break;
+      case 'bio':
+        setBio(e.target.value)
+        break;
+      case 'gender':
+        setGender(e.target.value)
+        break;
+      case 'avatar':
+        setAvatar(e.target.value)
+        break;
+      default:
+
+    }
+  }
+
+  function submitHandler(e) {
+    console.log(username, password, bio, gender, avatar);
+
+    e.preventDefault()
+  }
+
   return (
     <div className="modal fade" id="form" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog" role="document">
-        <form action="#">
+        <form action="#" onSubmit={submitHandler}>
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">Create A User</h5>
@@ -148,19 +183,19 @@ function Modal() {
             <div className="modal-body">
                 <div className="form-group">
                   <label htmlFor="username">Username</label>
-                  <input type="text" name="username" className="form-control" />
+                  <input type="text" name="username" onChange={changeHandler} className="form-control" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
-                  <input type="password" name="password" className="form-control" />
+                  <input type="password" name="password" onChange={changeHandler} className="form-control" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="bio">Bio</label>
-                  <textarea type="text" name="bio" className="form-control"></textarea>
+                  <textarea type="text" name="bio" onChange={changeHandler} className="form-control"></textarea>
                 </div>
                 <div className="form-group">
                   <label htmlFor="gender">Gender</label>
-                  <select name="gender" id="gender" className="form-control">
+                  <select name="gender" id="gender" onChange={changeHandler} className="form-control">
                     <option value="">Please, Select</option>
                     <option value="M">Male</option>
                     <option value="F">Female</option>
@@ -168,7 +203,7 @@ function Modal() {
                 </div>
                 <div className="form-group">
                   <label htmlFor="avatar">Avatar</label>
-                  <input type="file" name="avatar" className="form-control-file" />
+                  <input type="file" name="avatar" onChange={changeHandler} className="form-control-file" />
                 </div>
             </div>
             <div className="modal-footer">
